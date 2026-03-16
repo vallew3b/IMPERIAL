@@ -15,36 +15,26 @@ async function loadProducts() {
 }
 
 function renderProductsByCategory(products) {
-    const categories = {};
+    // Coloca los productos en las secciones existentes por id
     products.forEach(product => {
-        if (!categories[product.categoria]) {
-            categories[product.categoria] = [];
-        }
-        categories[product.categoria].push(product);
-    });
-
-    const mainSection = document.querySelector('body');
-    Object.keys(categories).forEach(cat => {
-        const section = document.createElement('section');
-        section.className = 'products';
-        section.innerHTML = `<h2>${cat.toUpperCase()}</h2><div class="grid"></div>`;
-        const grid = section.querySelector('.grid');
-        categories[cat].forEach(prod => {
+        const categoriaId = product.categoria ? product.categoria.toLowerCase() : '';
+        const section = document.getElementById(categoriaId);
+        if (section) {
+            const grid = section.querySelector('.grid');
             const card = document.createElement('div');
             card.className = 'card';
             card.innerHTML = `
-                <img src="${prod.imagen}" alt="${prod.nombre}">
-                <h3>${prod.nombre}</h3>
-                <p>${prod.descripcion}</p>
-                <p><strong>$${prod.precio}</strong></p>
-                <p><strong>Código:</strong> ${prod.codigo}</p>
-                <p><strong>Talla:</strong> ${prod.talla}</p>
-                <p><strong>Color:</strong> ${prod.color}</p>
+                <img src="${product.imagen}" alt="${product.nombre}">
+                <h3>${product.nombre}</h3>
+                <p>${product.descripcion}</p>
+                <p><strong>$${product.precio}</strong></p>
+                <p><strong>Código:</strong> ${product.codigo}</p>
+                <p><strong>Talla:</strong> ${product.talla}</p>
+                <p><strong>Color:</strong> ${product.color}</p>
                 <button>AGREGAR AL CARRITO</button>
             `;
             grid.appendChild(card);
-        });
-        mainSection.appendChild(section);
+        }
     });
 }
 
